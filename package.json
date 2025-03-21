@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/rodrigosnk/ExpressServer#readme",
   "dependencies": {
+    "chocolatey": "^0.0.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "^4.21.2",
