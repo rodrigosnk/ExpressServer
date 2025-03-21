@@ -1,11 +1,12 @@
 {
   "name": "expressserver",
   "version": "1.0.0",
+  "private": true,
   "description": "A basic http server",
-  "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/www",
+    "lint": "eslint **/*.js --ignore-pattern node_modules",
+    "debug": "SET DEBUG=expressserver:* & npm start"
   },
   "repository": {
     "type": "git",
@@ -22,7 +23,12 @@
   },
   "homepage": "https://github.com/rodrigosnk/ExpressServer#readme",
   "dependencies": {
-    "express": "^4.21.2"
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "^4.21.2",
+    "http-errors": "~1.6.3",
+    "jade": "^0.29.0",
+    "morgan": "~1.9.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.23.0",
