@@ -20,5 +20,13 @@
   "bugs": {
     "url": "https://github.com/rodrigosnk/ExpressServer/issues"
   },
-  "homepage": "https://github.com/rodrigosnk/ExpressServer#readme"
+  "homepage": "https://github.com/rodrigosnk/ExpressServer#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.23.0",
+    "eslint": "^9.23.0",
+    "globals": "^16.0.0"
+  }
 }
