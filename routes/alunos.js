@@ -1,22 +1,15 @@
 var express = require('express');
 var router = express.Router();
+const alunoController = require('../controllers/alunoController');
 
 /* GET alunos listing. */
-router.get('/', function(req, res,) {
-  res.send('GET alunos');
-});
+router.get('/', alunoController.findAll);
 /* POST alunos listing. */
-router.post('/', function(req, res,) {
-  res.send('POST alunos');
-});
+router.post('/', alunoController.save);
 /* PUT alunos listing. */
-router.put('/', function(req, res,) {
-  res.send('PUT alunos');
-});
+router.put('/', alunoController.update);
 /* DELETE alunos listing. */
-router.delete('/', function(req, res,) {
-  res.send('DELETE alunos');
-});
+router.delete('/:id', alunoController.remove);
 
 
 
