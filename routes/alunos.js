@@ -1,11 +1,14 @@
 var express = require('express');
 var router = express.Router();
 const alunoController = require('../controllers/alunoController');
+const nomeMidleware = require('../midlewares/nomeMidleware');
+const sobrenomeMidleware = require('../midlewares/sobrenomeMidleware');
+const notaMidleware = require('../midlewares/notaMidleware');
 
 /* GET alunos listing. */
 router.get('/', alunoController.findAll);
 /* POST alunos listing. */
-router.post('/', alunoController.save);
+router.post('/', nomeMidleware, sobrenomeMidleware, notaMidleware, alunoController.save);
 /* PUT alunos listing. */
 router.put('/', alunoController.update);
 /* DELETE alunos listing. */
