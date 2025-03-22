@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "lint": "eslint **/*.js --ignore-pattern node_modules",
-    "debug": "SET DEBUG=expressserver:* & npm start"
+    "debug": "SET DEBUG=expressserver:* & npm start",
+    "nodemon": "nodemon ./bin/www"
   },
   "repository": {
     "type": "git",
@@ -29,11 +30,13 @@
     "express": "^4.21.2",
     "http-errors": "~1.6.3",
     "jade": "^0.29.0",
-    "morgan": "~1.9.1"
+    "morgan": "~1.9.1",
+    "mysql2": "^3.14.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.23.0",
     "eslint": "^9.23.0",
-    "globals": "^16.0.0"
+    "globals": "^16.0.0",
+    "nodemon": "^3.1.9"
   }
 }
