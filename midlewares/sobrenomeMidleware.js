@@ -4,7 +4,7 @@ const validacaoSobrenome = (request , response, next) => {
         return response.status(400).json({ message : "O campo sobrenome e obrigatorio" });
     }
 
-    if(body.sobrenome === '') {
+    if(body.sobrenome.trim() === '') {
         return response.status(400).json({ message : "O campo sobrenome nao pode ser vazio" });
     }
 

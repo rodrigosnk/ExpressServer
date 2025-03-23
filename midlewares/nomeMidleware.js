@@ -4,7 +4,7 @@ const validacaoNome = (request , response, next) => {
         return response.status(400).json({ message : "O campo Nome e obrigatorio" });
     }
 
-    if(body.nome === '') {
+    if(body.nome.trim() === '') {
         return response.status(400).json({ message : "O campo nome nao pode ser vazio" });
     }
     if(body.nome.lenght < 3|| body.nome.lenght > 50) {
