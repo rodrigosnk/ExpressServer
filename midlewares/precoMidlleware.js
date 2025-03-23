@@ -3,7 +3,6 @@ const validacaoPreco = (request , response, next) => {
     if(body.preco == undefined) {
         return response.status(400).json({ message : "O campo preco e obrigatorio" });
     }
-    console.log(body.preco);
     if(body.preco.trim() === '') {
         return response.status(400).json({ message : "O campo preco nao pode ser vazio" });
     }

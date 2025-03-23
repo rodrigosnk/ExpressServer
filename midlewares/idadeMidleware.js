@@ -3,7 +3,7 @@ const validacaoIdade = (request , response, next) => {
     if(body.idade == undefined) {
         return response.status(400).json({ message : "O campo idade e obrigatorio" });
     }
-    if(body.preco.trim() === '') {
+    if(body.idade.trim() === '') {
         return response.status(400).json({ message : "O campo idade nao pode ser vazio" });
     }
     if(parseFloat(body.idade) < 1) {
