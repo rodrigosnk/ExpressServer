@@ -8,7 +8,7 @@ const notaMidleware = require('../midlewares/notaMidleware');
 /* GET alunos listing. */
 router.get('/', alunoController.findAll);
 /* POST alunos listing. */
-router.post('/', nomeMidleware, sobrenomeMidleware, notaMidleware, alunoController.save);
+router.post('/', nomeMidleware.validacaoNome, sobrenomeMidleware.validacaoSobrenome, notaMidleware.validacaoNota, alunoController.save);
 /* PUT alunos listing. */
 router.put('/', alunoController.update);
 /* DELETE alunos listing. */

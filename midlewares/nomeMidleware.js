@@ -7,7 +7,7 @@ const validacaoNome = (request , response, next) => {
     if(body.nome === '') {
         return response.status(400).json({ message : "O campo nome nao pode ser vazio" });
     }
-    if(body.nome.length() < 3|| body.nome.length() > 50) {
+    if(body.nome.lenght < 3|| body.nome.lenght > 50) {
         return response.status(400).json({ message : "O campo nome deve ter entre 3 e 50 caracteres" });
     }
     next();
