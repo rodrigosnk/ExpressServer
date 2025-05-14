@@ -9,11 +9,11 @@ const cacheMidleware = require('../midlewares/cacheMidleware');
 /* GET clientes listing. */
 router.get('/', cacheMidleware.caching, clientesController.findAll);
 /* POST clientes listing. */
-router.post('/',cacheMidleware.deleteCache, nomeMidleware.validacaoNome, sobrenomeMidleware.validacaoSobrenome, idadeMidleware.validacaoIdade, clientesController.save);
+router.post('/', nomeMidleware.validacaoNome, sobrenomeMidleware.validacaoSobrenome, idadeMidleware.validacaoIdade, clientesController.save, cacheMidleware.deleteCache);
 /* PUT clientes listing. */
-router.put('/',cacheMidleware.deleteCache, nomeMidleware.validacaoNome, sobrenomeMidleware.validacaoSobrenome, idadeMidleware.validacaoIdade, clientesController.update);
+router.put('/' ,nomeMidleware.validacaoNome, sobrenomeMidleware.validacaoSobrenome, idadeMidleware.validacaoIdade, clientesController.update, cacheMidleware.deleteCache);
 /* DELETE clientes listing. */
-router.delete('/:id',cacheMidleware.deleteCache, clientesController.remove);
+router.delete('/:id', clientesController.remove, cacheMidleware.deleteCache);
 
 
 

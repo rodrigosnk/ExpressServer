@@ -6,20 +6,32 @@ const findAll = async (request, response) => {
     return response.status(200).json(cliente);
 };
 
-const save = async (request, response) => {
+const save = async (request, response, next) => {
     const resultado = await clienteService.save(request.body);
-    return resultado ? response.status(200).json() : response.status(400).json({"[ERROR/SERVER]" : "falha ao salvar cliente"});
+    if (resultado) {
+        response.status(200).json();
+        return next();
+    }
+    return response.status(400).json({"[ERROR/SERVER]" : "falha ao salvar cliente"});
 };
 
-const update = async (request, response) => {
+const update = async (request, response, next) => {
     const resultado = await clienteService.update(request.body);
-    return resultado ? response.status(200).json() : response.status(400).json({"[ERROR/SERVER]" : "falha ao atualizar cliente"});
+    if (resultado) {
+        response.status(200).json();
+        return next();
+    }
+    return response.status(400).json({"[ERROR/SERVER]" : "falha ao atualizar cliente"});
 };
 
-const remove = async (request , response) => {
+const remove = async (request, response, next) => {
     const {id} = request.params;
     const resultado = await clienteService.remove(id);
-    return resultado ? response.status(200).json() : response.status(400).json({"[ERROR/SERVER]" : "falha ao deletar cliente"});
+    if (resultado) {
+        response.status(200).json();
+        return next();
+    }
+    return response.status(400).json({"[ERROR/SERVER]" : "falha ao deletar cliente"});
 };
 
 module.exports = {
