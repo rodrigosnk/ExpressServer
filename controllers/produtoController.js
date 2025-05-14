@@ -1,25 +1,38 @@
 //const { response } = require('../app');
 const produtoService = require('../services/produtoService');
 
-const findAll = async (request, response) => {
+const findAll = async (request, response, next) => {
     const produto = await produtoService.findAll();
-    return response.status(200).json(produto);
+    response.status(200).json(produto);
+    return next();
 };
 
-const save = async (request, response) => {
+const save = async (request, response, next) => {
     const resultado = await produtoService.save(request.body);
-    return resultado ? response.status(200).json() : response.status(400).json({"[ERROR/SERVER]" : "falha ao salvar produto"});
+    if (resultado) {
+        response.status(200).json();
+        return next();
+    }
+    return response.status(400).json({"[ERROR/SERVER]" : "falha ao salvar produto"});
 };
 
-const update = async (request, response) => {
+const update = async (request, response, next) => {
     const resultado = await produtoService.update(request.body);
-    return resultado ? response.status(200).json() : response.status(400).json({"[ERROR/SERVER]" : "falha ao atualizar produto"});
+    if (resultado) {
+        response.status(200).json();
+        return next();
+    }
+    return response.status(400).json({"[ERROR/SERVER]" : "falha ao atualizar produto"});
 };
 
-const remove = async (request , response) => {
+const remove = async (request, response, next) => {
     const {id} = request.params;
     const resultado = await produtoService.remove(id);
-    return resultado ? response.status(200).json() : response.status(400).json({"[ERROR/SERVER]" : "falha ao deletar produto"});
+    if (resultado) {
+        response.status(200).json();
+        return next();
+    }
+    return response.status(400).json({"[ERROR/SERVER]" : "falha ao deletar produto"});
 };
 
 module.exports = {

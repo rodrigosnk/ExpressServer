@@ -34,9 +34,10 @@ function caching(req, res, next) {
     next();
 }
 
-function deleteCache(req, res, next) {
+function deleteCache(req, res) {
     const chave = req.originalUrl.split('/')[1]; // Usando a URL como chave de cache
     if(cache.has(chave) === false) {
+        console.log(`${cores.verde}Cache não encontrado para a URL:${cores.reset} ${cores.amarelo}${chave}${cores.reset}`);
         return res; 
     }
     // Se for um método que altera dados e já houver cache, invalida o cache
