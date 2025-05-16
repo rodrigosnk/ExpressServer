@@ -1,27 +1,28 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
 
-var indexRouter = require('./routes/index');
+const indexRouter = require('./routes/index');
 
-var clientesRouter = require('./routes/clientes');
-var produtosRouter = require('./routes/produtos');
+const clientesRouter = require('./routes/clientes');
+const produtosRouter = require('./routes/produtos');
 //var usersRouter = require('./routes/users');
-var loginRouter = require('./routes/login');
-var logoutRouter = require('./routes/logout');
+const loginRouter = require('./routes/login');
+const logoutRouter = require('./routes/logout');
 
 
-var app = express();
+const app = express();
 
-//liberar acesso CORS
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+app.use(cors({
+    origin: '*', // Permitir todas as origens
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    allowedHeaders: ['Content-Type', 'Authorization'], // Cabeçalhos permitidos
+    credentials: true, // Permitir credenciais (cookies, cabeçalhos de autorização, etc.)
+}));
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
