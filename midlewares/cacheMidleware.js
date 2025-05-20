@@ -17,18 +17,28 @@ function caching(req, res, next) {
     const dadosCache = cache.get(chave);
 
     //Se houver dados no cache, retorna os dados do cache
-    if (dadosCache !== undefined && req.method === 'GET') {
+    if (dadosCache !== undefined) {
         console.log(`${cores.verde}Dados recuperados do cache para a URL:${cores.reset} ${cores.amarelo}${chave}${cores.reset}`);
-        return res.json(dadosCache); // Retorna os dados do cache
+        if(req.headers['if-none-match'] === dadosCache.etag) {
+            res.status(304).send(); // Retorna 304 Not Modified se o ETag for igual
+            return;
+        }
+        return res.json(dadosCache.data); // Retorna os dados do cache se estiver desatualizado
     }
 
     console.log(`${cores.vermelho}Dados não encontrados no cache para a URL:${cores.reset} ${cores.amarelo}${chave}${cores.reset}`);
     // Se não estiver no cache, armazena a resposta original
     const originalSend = res.json.bind(res);
     res.json = (body) => {
-        cache.set(chave, body, 30); // Armazena a resposta no cache
-        originalSend(body); // Continua enviando a resposta original
-        console.log(`${cores.azul}Armazenando no cache${cores.reset}`);
+        if (res.statusCode === 200) {
+            const etag = `W/"${JSON.stringify(originalSend(body))}"`; // Gera um ETag baseado no corpo da resposta
+            cache.set(chave, {data : body, etag}, 30); // Armazena a resposta no cache
+            res.setHeader('if-none-match', etag); // Configura o cabeçalho ETag na resposta
+            console.log(`${cores.azul}Armazenando no cache${cores.reset}`);
+        } else {
+            console.log(`${cores.vermelho}Resposta com erro não será cacheada (status: ${res.statusCode})${cores.reset}`);
+        }
+        originalSend(body);
     };
 
     next();
