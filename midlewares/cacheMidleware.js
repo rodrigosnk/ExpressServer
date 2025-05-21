@@ -1,4 +1,5 @@
 const NodeCache = require('node-cache');
+const crypto = require('crypto');
 const cache = new NodeCache(); // Instância do NodeCache
 
 // Cores para console.log
@@ -11,6 +12,16 @@ const cores = {
   reset: '\x1b[0m'
 };
 
+/**
+ * Gera um hash compacto para uso como ETag
+ * @param {Object} data - Dados para gerar o hash
+ * @returns {string} - Hash MD5 dos dados
+ */
+function gerarEtag(data) {
+    const conteudoString = JSON.stringify(data);
+    return crypto.createHash('md5').update(conteudoString).digest('hex');
+}
+
 // Middleware de caching
 function caching(req, res, next) {
     const chave = req.originalUrl.split('/')[1]; // Usando a URL como chave de cache
@@ -18,11 +29,13 @@ function caching(req, res, next) {
 
     //Se houver dados no cache, retorna os dados do cache
     if (dadosCache !== undefined) {
-        console.log(`${cores.verde}Dados recuperados do cache para a URL:${cores.reset} ${cores.amarelo}${chave}${cores.reset}`);
+        
         if(req.headers['if-none-match'] === dadosCache.etag) {
+            console.log(`${cores.verde}Cache ainda e valido para a URL:${cores.reset} ${cores.amarelo}${chave}${cores.reset}`);
             res.status(304).send(); // Retorna 304 Not Modified se o ETag for igual
             return;
         }
+        console.log(`${cores.verde}Dados recuperados do cache para a URL:${cores.reset} ${cores.amarelo}${chave}${cores.reset}`);
         return res.json(dadosCache.data); // Retorna os dados do cache se estiver desatualizado
     }
 
@@ -31,9 +44,9 @@ function caching(req, res, next) {
     const originalSend = res.json.bind(res);
     res.json = (body) => {
         if (res.statusCode === 200) {
-            const etag = `W/"${JSON.stringify(originalSend(body))}"`; // Gera um ETag baseado no corpo da resposta
-            cache.set(chave, {data : body, etag}, 30); // Armazena a resposta no cache
-            res.setHeader('if-none-match', etag); // Configura o cabeçalho ETag na resposta
+            const etag = `W/"${gerarEtag(body)}"`; // Gera um ETag compacto baseado no hash do corpo
+            cache.set(chave, {data : body, etag}, 300); // Armazena a resposta no cache
+            res.setHeader('ETag', etag); // Configura o cabeçalho ETag na resposta
             console.log(`${cores.azul}Armazenando no cache${cores.reset}`);
         } else {
             console.log(`${cores.vermelho}Resposta com erro não será cacheada (status: ${res.statusCode})${cores.reset}`);
