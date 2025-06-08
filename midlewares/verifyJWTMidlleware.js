@@ -1,6 +1,9 @@
 var jwt = require('jsonwebtoken');
+const NodeCache = require('node-cache');
 
-const secret = 'rodrigosnk';
+const secret = process.env.SECRET;
+// Cache para armazenar tokens inválidos (blacklist)
+const tokenBlacklist = new NodeCache();
 
 // Middleware para verificar o token JWT
 const verifyJWT = (req, res, next) => {
@@ -11,6 +14,12 @@ const verifyJWT = (req, res, next) => {
     if (!token) {
         return res.status(401).json({ error: 'Token não fornecido.' });
     }
+
+    // Verifica se o token está na blacklist
+    if (tokenBlacklist.has(token)) {
+        return res.status(401).json({ error: 'Token invalidado por logout.' });
+    }
+
     // Verifica se o token é válido
     jwt.verify(token, secret, (err, decoded) => {
         if (err) {
@@ -24,4 +33,23 @@ const verifyJWT = (req, res, next) => {
     });
 };
 
-module.exports = { verifyJWT };
+// Função para invalidar um token
+const invalidateToken = (token) => {
+    try {
+        // Decodifica o token para obter a expiração
+        const decoded = jwt.verify(token, secret);
+        
+        // Calcula quanto tempo falta para o token expirar (em segundos)
+        const now = Math.floor(Date.now() / 1000);
+        const ttl = decoded.exp ? (decoded.exp - now) : 3600; // 1h padrão se não houver exp
+        
+        // Adiciona o token à blacklist com TTL apropriado
+        tokenBlacklist.set(token, true, ttl > 0 ? ttl : 0);
+        return true;
+    } catch (error) {
+        console.error('Erro ao invalidar token:', error);
+        return false;
+    }
+};
+
+module.exports = { verifyJWT, invalidateToken };

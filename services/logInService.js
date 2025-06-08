@@ -1,19 +1,15 @@
 const connection = require('../configs/dbConfiguration');
 
-const login = async (userData, token) => {
-    const { user, password } = userData;
+const findUser = async (usuario) => {
+    const query = 'SELECT * FROM usuarios WHERE usuario = ? AND senha = ?';
+    const [result] = await (await connection).execute(query, [usuario.user, usuario.password]);
+    return result[0];
+};
 
-    // Verifica se o usuário existe e se a senha está correta
-    const [dados] = await (await connection).execute('SELECT * FROM usuarios WHERE usuario = ?', [user]);
-    if (dados.length === 0 || dados[0].senha !== password) {
-        throw new Error('Usuário ou senha incorretos.');
-    }
-
-    // inserir o token no banco de dados
+const update = async (usuario) => {
     const query = 'UPDATE usuarios SET token = ? WHERE usuario = ?';
-    const result = await (await connection).execute(query, [token, user]);
+    const isOK = await (await connection).execute(query, [usuario.token, usuario.user]);
+    return isOK[0].affectedRows === 1;
+};
 
-    return result[0].affectedRows === 1;
-}
-
-module.exports = { login };
+module.exports = { findUser, update };
