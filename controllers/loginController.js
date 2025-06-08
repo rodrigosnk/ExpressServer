@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const secretKey = process.env.SECRET;
 
 const findUser = async (req, res) => {
+    // Valida a senha usando o middleware
     const usuario = await loginService.findUser(req.body);
     // Verifica se o usuário existe e se a senha está correta
     if (!usuario || usuario === undefined) {
@@ -20,7 +21,7 @@ const findUser = async (req, res) => {
     }
     // Retorna o token para o cliente
     return res.status(200).json({auth: true, token });
-}
+};
 
 
 module.exports = {

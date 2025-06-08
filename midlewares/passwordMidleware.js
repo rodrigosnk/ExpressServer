@@ -1,4 +1,3 @@
-const secret = 'rodrigosnk';
 const crypto = require('crypto');
 
 // Middleware para validar a senha e retornar senha criptografada

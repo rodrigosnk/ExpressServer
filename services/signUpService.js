@@ -14,6 +14,6 @@ const signUp = async (userData) => {
     const result = await (await connection).execute(query, [user, password]);
 
     return result[0].affectedRows === 1;
-}
+};
 
 module.exports = { signUp };
