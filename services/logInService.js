@@ -8,7 +8,7 @@ const findUser = async (usuario) => {
 
 const update = async (usuario) => {
     const query = 'UPDATE usuarios SET token = ? WHERE usuario = ?';
-    const isOK = await (await connection).execute(query, [usuario.token, usuario.user]);
+    const isOK = await (await connection).execute(query, [usuario.token, usuario.usuario]);
     return isOK[0].affectedRows === 1;
 };
 

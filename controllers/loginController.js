@@ -1,10 +1,9 @@
-const loginService = require('../services/loginService');
+const loginService = require('../services/logInService');
 const jwt = require('jsonwebtoken');
 
 const secretKey = process.env.SECRET;
 
 const findUser = async (req, res) => {
-    
     const usuario = await loginService.findUser(req.body);
     // Verifica se o usuário existe e se a senha está correta
     if (!usuario || usuario === undefined) {
@@ -13,7 +12,6 @@ const findUser = async (req, res) => {
 
     // Gera um token JWT para o usuário
     const token = jwt.sign({ id: usuario.id }, secretKey, { expiresIn: 300 }); // O token expira em 5 minutos
-
     usuario.token = token;
     // Atualiza o token do usuário no banco de dados
     const isOK = await loginService.update(usuario);
