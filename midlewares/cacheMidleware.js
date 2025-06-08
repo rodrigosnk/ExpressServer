@@ -65,4 +65,6 @@ function deleteCache(req, res) {
     return res; // Continua para o próximo middleware ou controlador
 }
 
+
+
 module.exports = { caching, deleteCache };
