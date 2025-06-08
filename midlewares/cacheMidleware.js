@@ -12,11 +12,7 @@ const cores = {
   reset: '\x1b[0m'
 };
 
-/**
- * Gera um hash compacto para uso como ETag
- * @param {Object} data - Dados para gerar o hash
- * @returns {string} - Hash MD5 dos dados
- */
+
 function gerarEtag(data) {
     const conteudoString = JSON.stringify(data);
     return crypto.createHash('md5').update(conteudoString).digest('hex');

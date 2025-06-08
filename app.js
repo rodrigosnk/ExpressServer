@@ -12,6 +12,7 @@ const produtosRouter = require('./routes/produtos');
 //var usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
 const logoutRouter = require('./routes/logout');
+const signUpRouter = require('./routes/signUp');
 
 
 const app = express();
@@ -40,6 +41,7 @@ app.use('/produtos', produtosRouter);
 //app.use('/users', usersRouter);
 app.use('/login', loginRouter); 
 app.use('/logout', logoutRouter);
+app.use('/signup', signUpRouter); // Importando a rota de signUp
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
