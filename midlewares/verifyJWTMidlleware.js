@@ -23,7 +23,6 @@ const verifyJWT = (req, res, next) => {
     // Verifica se o token é válido
     jwt.verify(token, secret, (err, decoded) => {
         if (err) {
-            console.error(err);
             return res.status(401).json({ error: 'Token inválido.' });
         }
         

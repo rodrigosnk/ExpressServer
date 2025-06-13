@@ -26,12 +26,14 @@ function caching(req, res, next) {
     //Se houver dados no cache, retorna os dados do cache
     if (dadosCache !== undefined) {
         
-        if(req.headers['if-none-match'] === dadosCache.etag) {
+        if(req.headers['If-None-Match'] === dadosCache.etag) {
             console.log(`${cores.verde}Cache ainda e valido para a URL:${cores.reset} ${cores.amarelo}${chave}${cores.reset}`);
             res.status(304).send(); // Retorna 304 Not Modified se o ETag for igual
             return;
         }
         console.log(`${cores.verde}Dados recuperados do cache para a URL:${cores.reset} ${cores.amarelo}${chave}${cores.reset}`);
+        res.setHeader('ETag', dadosCache.etag); // Configura o cabeçalho ETag na resposta
+
         return res.json(dadosCache.data); // Retorna os dados do cache se estiver desatualizado
     }
 
