@@ -4,25 +4,25 @@ const crypto = require('crypto');
 const validacaoSenha = (request , response, next) => {
     const {body} = request;
     if(body.password == undefined) {
-        return response.status(400).json({ message : "o campo senha e obrigatorio" });
+        return response.status(400).json({auth: false, token: "", message : "o campo senha e obrigatorio" });
     }
     if(body.password === '') {
-        return response.status(400).json({ message : "O campo senha nao pode ser vazio" });
+        return response.status(400).json({auth: false, token: "", message : "O campo senha nao pode ser vazio" });
     }
     if(body.password.length < 6) {
-        return response.status(400).json({ message : "O campo senha deve ter no minimo 6 caracteres" });
+        return response.status(400).json({auth: false, token: "", message : "O campo senha deve ter no minimo 6 caracteres" });
     }
     if(body.password.length > 20) {
-        return response.status(400).json({ message : "O campo senha deve ter no maximo 20 caracteres" });
+        return response.status(400).json({auth: false, token: "", message : "O campo senha deve ter no maximo 20 caracteres" });
     }
     if(!/[A-Z]/.test(body.password)) {
-        return response.status(400).json({ message : "O campo senha deve conter pelo menos uma letra maiuscula" });
+        return response.status(400).json({auth: false, token: "", message : "O campo senha deve conter pelo menos uma letra maiuscula" });
     }
     if(!/[0-9]/.test(body.password)) {
-        return response.status(400).json({ message : "O campo senha deve conter pelo menos um numero" });
+        return response.status(400).json({auth: false, token: "", message : "O campo senha deve conter pelo menos um numero" });
     }
     if(!/[!@#$%^&*(),.?":{}|<>]/.test(body.password)) {
-        return response.status(400).json({ message : "O campo senha deve conter pelo menos um caractere especial" });
+        return response.status(400).json({auth: false, token: "", message : "O campo senha deve conter pelo menos um caractere especial" });
     }
     // Criptografa a senha
     body.password = crypto.createHash('sha256').update(body.password).digest('hex');

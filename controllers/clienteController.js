@@ -9,7 +9,7 @@ const findAll = async (request, response) => {
 const save = async (request, response, next) => {
     const resultado = await clienteService.save(request.body);
     if (resultado) {
-        response.status(200).json();
+        response.status(201).json();
         return next();
     }
     return response.status(400).json({"[ERROR/SERVER]" : "falha ao salvar cliente"});
@@ -18,7 +18,7 @@ const save = async (request, response, next) => {
 const update = async (request, response, next) => {
     const resultado = await clienteService.update(request.body);
     if (resultado) {
-        response.status(200).json();
+        response.status(204).json();
         return next();
     }
     return response.status(400).json({"[ERROR/SERVER]" : "falha ao atualizar cliente"});
@@ -28,7 +28,7 @@ const remove = async (request, response, next) => {
     const {id} = request.params;
     const resultado = await clienteService.remove(id);
     if (resultado) {
-        response.status(200).json();
+        response.status(204).json();
         return next();
     }
     return response.status(400).json({"[ERROR/SERVER]" : "falha ao deletar cliente"});
