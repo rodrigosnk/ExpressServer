@@ -40,6 +40,10 @@ const verifyJWT = (req, res, next) => {
 // Função para invalidar um token
 const invalidateToken = (token) => {
     try {
+
+        if (token.startsWith('Bearer ')) {
+            token = token.slice(7).trim();
+        }
         // Decodifica o token para obter a expiração
         const decoded = jwt.verify(token, secret);
         
