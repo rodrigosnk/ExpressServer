@@ -8,11 +8,16 @@ const tokenBlacklist = new NodeCache();
 // Middleware para verificar o token JWT
 const verifyJWT = (req, res, next) => {
     // Obtém o token do cabeçalho de autorização
-    const token = req.headers['authorization'];
+    let token = req.headers['authorization'];
     
     // Verifica se o token foi fornecido
     if (!token) {
         return res.status(401).json({ error: 'Token não fornecido.' });
+    }
+
+    // Suporta o padrão 'Bearer <token>'
+    if (token.startsWith('Bearer ')) {
+        token = token.slice(7).trim();
     }
 
     // Verifica se o token está na blacklist
